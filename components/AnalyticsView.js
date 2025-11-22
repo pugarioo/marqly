@@ -1,12 +1,14 @@
 "use client";
 
-import React from 'react';
-import { Bar, Doughnut } from 'react-chartjs-2';
+import React, { useState } from 'react';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
     BarElement,
+    LineElement,
+    PointElement,
     Title,
     Tooltip,
     Legend,
@@ -17,6 +19,8 @@ ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
+    LineElement,
+    PointElement,
     Title,
     Tooltip,
     Legend,
@@ -24,6 +28,17 @@ ChartJS.register(
 );
 
 const AnalyticsView = () => {
+    const [activePlatform, setActivePlatform] = useState('all');
+
+    const platforms = [
+        { id: 'all', name: 'All Platforms', icon: '📊' },
+        { id: 'facebook', name: 'Facebook', icon: '📘' },
+        { id: 'instagram', name: 'Instagram', icon: '📷' },
+        { id: 'tiktok', name: 'TikTok', icon: '🎵' },
+        { id: 'youtube', name: 'YouTube', icon: '📺' },
+        { id: 'email', name: 'Email', icon: '📧' },
+    ];
+
     const performanceData = {
         labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
         datasets: [
@@ -100,6 +115,32 @@ const AnalyticsView = () => {
         }
     };
 
+    const aiInsights = [
+        { type: 'positive', icon: '📈', title: 'Engagement Trending Up', text: 'Your engagement rate increased by 15% this week. Keep posting similar content!' },
+        { type: 'suggestion', icon: '💡', title: 'Best Time to Post', text: 'Data shows your audience is most active between 6-8 PM. Schedule posts during this window.' },
+        { type: 'warning', icon: '⚠️', title: 'TikTok Performance', text: 'TikTok reach has declined 8%. Consider posting more video content.' },
+        { type: 'suggestion', icon: '🎯', title: 'Content Recommendation', text: 'Video posts get 2.5x more engagement than images. Try incorporating more videos.' },
+    ];
+
+    const emailMetrics = {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [{
+            label: 'Open Rate %',
+            data: [22, 25, 28, 30],
+            borderColor: '#10B981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            tension: 0.4,
+            fill: true,
+        }]
+    };
+
+    const customerSegments = [
+        { name: 'Age 18-24', percentage: 25, count: '5.2K' },
+        { name: 'Age 25-34', percentage: 40, count: '8.5K' },
+        { name: 'Age 35-44', percentage: 20, count: '4.1K' },
+        { name: 'Age 45+', percentage: 15, count: '3.1K' },
+    ];
+
     return (
         <div id="analyticsView" className="view active">
             <div className="flex justify-between items-center mb-6">
@@ -116,6 +157,23 @@ const AnalyticsView = () => {
                         Export Report
                     </button>
                 </div>
+            </div>
+
+            {/* Platform Tabs */}
+            <div className="flex flex-wrap gap-2 mb-6">
+                {platforms.map(platform => (
+                    <button
+                        key={platform.id}
+                        onClick={() => setActivePlatform(platform.id)}
+                        className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${activePlatform === platform.id
+                                ? 'bg-primary text-white shadow-md'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                    >
+                        <span className="mr-2">{platform.icon}</span>
+                        {platform.name}
+                    </button>
+                ))}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
@@ -149,13 +207,40 @@ const AnalyticsView = () => {
                 </div>
             </div>
 
+            {/* AI Insights Panel */}
+            <div className="card mb-6 bg-gradient-to-br from-purple-50 to-blue-50">
+                <div className="flex items-center mb-4">
+                    <span className="text-2xl mr-2">🤖</span>
+                    <h3 className="card-title">AI-Powered Insights</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {aiInsights.map((insight, idx) => (
+                        <div key={idx} className={`p-4 rounded-lg ${insight.type === 'positive' ? 'bg-green-50' :
+                                insight.type === 'warning' ? 'bg-yellow-50' :
+                                    'bg-blue-50'
+                            }`}>
+                            <div className="flex items-start">
+                                <span className="text-2xl mr-3">{insight.icon}</span>
+                                <div>
+                                    <h4 className="font-semibold text-gray-900 mb-1">{insight.title}</h4>
+                                    <p className="text-sm text-gray-700">{insight.text}</p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                {/* Social Media Performance */}
                 <div className="card">
-                    <h3 className="card-title">Performance Trends</h3>
+                    <h3 className="card-title">Social Media Performance</h3>
                     <div className="chart-container">
                         <Bar data={performanceData} options={performanceOptions} />
                     </div>
                 </div>
+
+                {/* Platform Distribution */}
                 <div className="card">
                     <h3 className="card-title">Platform Distribution</h3>
                     <div className="chart-container">
@@ -164,6 +249,111 @@ const AnalyticsView = () => {
                 </div>
             </div>
 
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                {/* Google Analytics Widget */}
+                <div className="card">
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center">
+                            <span className="text-2xl mr-2">📊</span>
+                            <h3 className="font-semibold">Google Analytics</h3>
+                        </div>
+                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+                            <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                            Connected
+                        </span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-xs text-gray-500 mb-1">Sessions</p>
+                            <p className="text-lg font-bold text-gray-900">25.4K</p>
+                            <p className="text-xs text-green-600">↑ 8%</p>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-xs text-gray-500 mb-1">Users</p>
+                            <p className="text-lg font-bold text-gray-900">18.2K</p>
+                            <p className="text-xs text-green-600">↑ 12%</p>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <p className="text-xs text-gray-500 mb-1">Pageviews</p>
+                            <p className="text-lg font-bold text-gray-900">67.8K</p>
+                            <p className="text-xs text-green-600">↑ 5%</p>
+                        </div>
+                    </div>
+                    <div className="border-t pt-3">
+                        <p className="text-sm text-gray-600 mb-2">Top Pages:</p>
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-700">/products</span>
+                                <span className="font-semibold">12.5K views</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-700">/about</span>
+                                <span className="font-semibold">8.3K views</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-700">/blog</span>
+                                <span className="font-semibold">6.1K views</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Email Campaign Analytics */}
+                <div className="card">
+                    <div className="flex items-center mb-4">
+                        <span className="text-2xl mr-2">📧</span>
+                        <h3 className="font-semibold">Email Campaign Performance</h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="text-center p-3 bg-blue-50 rounded-lg">
+                            <p className="text-xs text-gray-600 mb-1">Open Rate</p>
+                            <p className="text-2xl font-bold text-blue-600">30%</p>
+                        </div>
+                        <div className="text-center p-3 bg-green-50 rounded-lg">
+                            <p className="text-xs text-gray-600 mb-1">Click Rate</p>
+                            <p className="text-2xl font-bold text-green-600">8.5%</p>
+                        </div>
+                    </div>
+                    <div className="h-48">
+                        <Line data={emailMetrics} options={{ ...performanceOptions, plugins: { legend: { display: false } } }} />
+                    </div>
+                    <div className="mt-4 border-t pt-3">
+                        <p className="text-sm text-gray-600 mb-2">Recent Campaigns:</p>
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-gray-700">Summer Newsletter</span>
+                                <span className="text-green-600">35% open</span>
+                            </div>
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-gray-700">Product Announcement</span>
+                                <span className="text-green-600">42% open</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Audience Segmentation */}
+            <div className="card mb-6">
+                <div className="flex items-center justify-between mb-4">
+                    <h3 className="card-title">Audience Segmentation</h3>
+                    <button className="text-sm text-primary hover:underline">View All Segments →</button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {customerSegments.map((segment, idx) => (
+                        <div key={idx} className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
+                            <p className="text-sm font-semibold text-gray-900 mb-2">{segment.name}</p>
+                            <p className="text-2xl font-bold text-primary mb-2">{segment.count}</p>
+                            <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                <div className="bg-primary h-2 rounded-full" style={{ width: `${segment.percentage}%` }}></div>
+                            </div>
+                            <p className="text-xs text-gray-500">{segment.percentage}% of total</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Top Performing Content */}
             <div className="card">
                 <h3 className="card-title">Top Performing Content</h3>
                 <div className="overflow-x-auto">

@@ -12,6 +12,7 @@ import SuggestionsView from '../components/SuggestionsView';
 import AccountView from '../components/AccountView';
 import NotificationsView from '../components/NotificationsView';
 import EmailsView from '../components/EmailsView';
+import IntegrationsView from '../components/IntegrationsView';
 import ContentModal from '../components/modals/ContentModal';
 import CampaignModal from '../components/modals/CampaignModal';
 
@@ -173,8 +174,9 @@ export default function Home() {
       case 'campaigns': return 'Campaign Management';
       case 'analytics': return 'Analytics & Reports';
       case 'suggestions': return 'AI Suggestions';
+      case 'integrations': return 'Platform Integrations';
       case 'notifications': return 'Notifications';
-      case 'emails': return 'Emails';
+      case 'emails': return 'Messages';
       case 'account': return 'Account Settings';
       default: return 'Marqly';
     }
@@ -237,6 +239,7 @@ export default function Home() {
           {currentView === 'suggestions' && (
             <SuggestionsView onUseSuggestion={handleUseSuggestion} />
           )}
+          {currentView === 'integrations' && <IntegrationsView />}
           {currentView === 'notifications' && <NotificationsView />}
           {currentView === 'emails' && <EmailsView />}
           {currentView === 'account' && <AccountView />}

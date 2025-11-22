@@ -4,12 +4,20 @@ import React, { useState } from 'react';
 
 const TopBar = ({ title, onNavigate, isSidebarOpen, onToggleSidebar }) => {
     const [showNotifications, setShowNotifications] = useState(false);
+    const [isOnline, setIsOnline] = useState(true);
+    const [lastSync, setLastSync] = useState('Just now');
+    const [userRole, setUserRole] = useState('Admin'); // Simulated role
 
     const notifications = [
         { id: 1, text: "New campaign 'Summer Sale' scheduled", time: "5m ago", unread: true },
         { id: 2, text: "Your post on Instagram is trending", time: "1h ago", unread: true },
         { id: 3, text: "Weekly analytics report is ready", time: "1d ago", unread: false },
     ];
+
+    // Simulate sync status
+    const handleSync = () => {
+        setLastSync('Just now');
+    };
 
     return (
         <header className="top-bar relative">
@@ -28,9 +36,35 @@ const TopBar = ({ title, onNavigate, isSidebarOpen, onToggleSidebar }) => {
                         )}
                     </svg>
                 </button>
-                <h2 id="pageTitle" className="page-title">{title}</h2>
+
+                <div className="flex items-center">
+                    <h2 id="pageTitle" className="page-title">{title}</h2>
+
+                    {/* Online/Offline Status */}
+                    <div className="hidden md:flex items-center ml-4 px-3 py-1 rounded-full bg-gray-100">
+                        <span className={`w-2 h-2 rounded-full mr-2 ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>
+                        <span className="text-xs font-medium text-gray-700">
+                            {isOnline ? 'Online' : 'Offline'}
+                        </span>
+                        {isOnline && (
+                            <button onClick={handleSync} className="ml-2 text-xs text-primary hover:underline">
+                                <svg className="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                </svg>
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Last Sync */}
+                    {isOnline && (
+                        <span className="hidden lg:block text-xs text-gray-500 ml-3">
+                            Last synced: {lastSync}
+                        </span>
+                    )}
+                </div>
+
                 <div className="flex items-center space-x-4">
-                    <div className="relative">
+                    <div className="relative hidden md:block">
                         <input type="text" placeholder="Search..." className="search-input" />
                         <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
@@ -73,8 +107,14 @@ const TopBar = ({ title, onNavigate, isSidebarOpen, onToggleSidebar }) => {
                         )}
                     </div>
 
-                    <div className="user-avatar">
-                        <img src="https://ui-avatars.com/api/?name=Christian+Padilla&background=007BFF&color=fff" alt="User" className="w-10 h-10 rounded-full" />
+                    <div className="flex items-center">
+                        {/* User Role Badge */}
+                        <span className="hidden sm:inline-block text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-700 font-medium mr-2">
+                            {userRole}
+                        </span>
+                        <div className="user-avatar">
+                            <img src="https://ui-avatars.com/api/?name=Christian+Padilla&background=007BFF&color=fff" alt="User" className="w-10 h-10 rounded-full" />
+                        </div>
                     </div>
                 </div>
             </div>
