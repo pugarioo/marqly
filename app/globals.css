@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* Marqly Brand Colors - Refreshed Palette */
 :root {
     --primary: #4A90E2;
@@ -68,8 +70,15 @@
 }
 
 @keyframes float {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(-30px, -30px) rotate(180deg); }
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(-30px, -30px) rotate(180deg);
+    }
 }
 
 .login-card {
@@ -675,6 +684,7 @@
         opacity: 0;
         transform: translateY(-20px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -754,7 +764,7 @@
     accent-color: var(--primary);
 }
 
-.platform-checkbox input[type="checkbox"]:checked + span {
+.platform-checkbox input[type="checkbox"]:checked+span {
     color: var(--primary);
     font-weight: 600;
 }
@@ -892,6 +902,7 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -934,7 +945,9 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Animation for notifications */
@@ -943,6 +956,7 @@
         opacity: 0;
         transform: translateX(100%);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -1049,4 +1063,3 @@
     white-space: nowrap;
     background: var(--gray-50);
 }
-
