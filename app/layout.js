@@ -12,8 +12,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} ${montserrat.variable} ${openSans.variable}`}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} ${montserrat.variable} ${openSans.variable}`} suppressHydrationWarning>{children}</body>
     </html>
   );
 }

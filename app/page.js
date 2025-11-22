@@ -20,6 +20,7 @@ export default function Home() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [contentItems, setContentItems] = useState([]);
   const [campaigns, setCampaigns] = useState([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Modal states
   const [isContentModalOpen, setIsContentModalOpen] = useState(false);
@@ -98,6 +99,14 @@ export default function Home() {
     setCurrentView('dashboard');
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   const handleSaveContent = (content) => {
     if (contentItems.find(c => c.id === content.id)) {
       setContentItems(contentItems.map(c => c.id === content.id ? content : c));
@@ -173,14 +182,29 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={closeSidebar}
+        />
+      )}
+
       <Sidebar
         currentView={currentView}
         onViewChange={setCurrentView}
         onLogout={handleLogout}
+        isSidebarOpen={isSidebarOpen}
+        onCloseSidebar={closeSidebar}
       />
 
       <main className="main-content flex-1">
-        <TopBar title={getPageTitle()} onNavigate={setCurrentView} />
+        <TopBar
+          title={getPageTitle()}
+          onNavigate={setCurrentView}
+          isSidebarOpen={isSidebarOpen}
+          onToggleSidebar={toggleSidebar}
+        />
 
         <div className="content-wrapper">
           {currentView === 'dashboard' && (

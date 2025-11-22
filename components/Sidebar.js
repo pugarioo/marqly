@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const Sidebar = ({ currentView, onViewChange, onLogout }) => {
+const Sidebar = ({ currentView, onViewChange, onLogout, isSidebarOpen, onCloseSidebar }) => {
     const menuItems = [
         {
             id: 'dashboard', label: 'Dashboard', icon: (
@@ -46,8 +46,16 @@ const Sidebar = ({ currentView, onViewChange, onLogout }) => {
         },
     ];
 
+    const handleNavClick = (viewId) => {
+        onViewChange(viewId);
+        // Close sidebar on mobile after navigation
+        if (onCloseSidebar) {
+            onCloseSidebar();
+        }
+    };
+
     return (
-        <nav className="sidebar">
+        <nav className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
                 <h1 className="logo-text-small">Marqly</h1>
             </div>
@@ -56,7 +64,7 @@ const Sidebar = ({ currentView, onViewChange, onLogout }) => {
                     <li key={item.id}>
                         <a
                             href="#"
-                            onClick={(e) => { e.preventDefault(); onViewChange(item.id); }}
+                            onClick={(e) => { e.preventDefault(); handleNavClick(item.id); }}
                             className={`nav-item ${currentView === item.id ? 'active' : ''}`}
                         >
                             {item.icon}
